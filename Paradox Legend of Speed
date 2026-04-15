@@ -4,7 +4,7 @@ _G.tokenvar = tostring(math.random(100000, 999999))
 
 local v1 = loadstring(game:HttpGet('https://raw.githubusercontent.com/EncryptedV100/Paradox-Hub/refs/heads/main/Library/Paradox.lua', true))()
 
-v1:AddWindow('Paradox Hub | Legends Of Speed')
+v1:AddWindow('Zenx Hub | Legends Of Speed')
 
 local _Main = v1:CreateTab('Main', '113339774911055')
 local _LocalPlayer = game.Players.LocalPlayer;
