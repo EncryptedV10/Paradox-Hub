@@ -1,0 +1,1516 @@
+-- ts file was generated at discord.gg/25ms
+
+_G.tokenvar = tostring(math.random(100000, 999999))
+
+local v1 = loadstring(game:HttpGet('https://raw.githubusercontent.com/EncryptedV100/Paradox-Hub/refs/heads/main/Library/Paradox.lua', true))()
+
+v1:AddWindow('Zenx Hub | Legends Of Speed')
+
+local _Main = v1:CreateTab('Main', '113339774911055')
+local _LocalPlayer = game.Players.LocalPlayer;
+
+(_LocalPlayer.Character or _LocalPlayer.CharacterAdded:Wait()):WaitForChild('Humanoid')
+
+local _LocalPlayer2 = game.Players.LocalPlayer
+local _Humanoid = (_LocalPlayer2.Character or _LocalPlayer2.CharacterAdded:Wait()):WaitForChild('Humanoid')
+local _ReplicatedStorage = game:GetService('ReplicatedStorage')
+local _ = _ReplicatedStorage.cPetShopRemote
+local _ = _ReplicatedStorage.cPetShopFolder
+local u7 = 'Teleport'
+local u8 = false
+local u9 = false
+local u10 = nil
+local u11 = nil
+local u12 = 'Yellow Orb'
+local u13 = 'City'
+local u14 = 0.001
+local u15 = 10
+local u16 = false
+local u17 = nil
+
+_Main:CreateLabel('Discord Server:')
+_Main:CreateButton('Copy Link', 'Copies the Discord link', function()
+    setclipboard('https://discord.gg/45KAmZVVk2')
+end)
+_Main:CreateLabel('Local Player')
+_Main:CreateTextbox('WalkSpeed', 'Enter your WalkSpeed', function(p18)
+    local v19 = tonumber(p18)
+
+    if v19 then
+        _Humanoid.WalkSpeed = v19
+    end
+end)
+_Main:CreateTextbox('JumpPower', 'Enter your JumpPower', function(p20)
+    local v21 = tonumber(p20)
+
+    if v21 then
+        _Humanoid.JumpPower = v21
+    end
+end)
+
+local _Racing = _Main:CreateFolder('Racing')
+
+_Racing:CreateDropdown('Race Method', 'Choose your race method', {
+    'Teleport',
+    'Smooth',
+}, function(p23)
+    u7 = p23
+end)
+_Racing:CreateToggle('Auto Race', 'Automatically race with selected race method', function(p24)
+    u8 = p24
+
+    if u8 then
+        u10 = task.spawn(function()
+            local v25 = false
+            local v26 = false
+
+            while u8 do
+                local _raceTimer = game:GetService('ReplicatedStorage'):FindFirstChild('raceTimer')
+                local _raceStarted = game:GetService('ReplicatedStorage'):FindFirstChild('raceStarted')
+
+                if u7 ~= 'Teleport' then
+                    if u7 == 'Smooth' then
+                        if _raceTimer and (_raceTimer:IsA('IntValue') and (_raceTimer.Value <= 0 and not v25)) then
+                            task.wait(0.5)
+                            game:GetService('ReplicatedStorage'):WaitForChild('rEvents'):WaitForChild('raceEvent'):FireServer('joinRace')
+
+                            v26 = false
+                            v25 = true
+                        end
+                        if _raceStarted and (_raceStarted:IsA('BoolValue') and (_raceStarted.Value == true and not v26)) then
+                            local v29 = workspace:GetDescendants()
+                            local v30 = nil
+                            local _huge = math.huge
+                            local _Character = game.Players.LocalPlayer.Character
+
+                            if _Character and _Character:FindFirstChild('HumanoidRootPart') then
+                                local v33, v34, v35 = ipairs(v29)
+
+                                while true do
+                                    local v36
+
+                                    v35, v36 = v33(v34, v35)
+
+                                    if v35 == nil then
+                                        break
+                                    end
+                                    if v36:IsA('BasePart') and v36.Name == 'finishPart' then
+                                        local _Magnitude = (_Character.HumanoidRootPart.Position - v36.Position).Magnitude
+
+                                        if _Magnitude < _huge then
+                                            v30 = v36
+                                            _huge = _Magnitude
+                                        end
+                                    end
+                                end
+
+                                if v30 then
+                                    _Character:MoveTo(v30.Position)
+
+                                    v26 = true
+                                end
+                            end
+                        end
+                        if _raceStarted and (_raceStarted:IsA('BoolValue') and _raceStarted.Value == false) then
+                            v25 = false
+                        end
+                    end
+                else
+                    local _Character2 = game.Players.LocalPlayer.Character
+
+                    if _Character2 and _Character2:FindFirstChild('HumanoidRootPart') then
+                        _Character2:MoveTo(Vector3.new(1686.07, 36.31, -5946.63))
+                        task.wait(0.1)
+                        _Character2:MoveTo(Vector3.new(48.31, 36.31, -8680.45))
+                        task.wait(0.1)
+                        _Character2:MoveTo(Vector3.new(1001.33, 36.31, -10986.21))
+                        task.wait(0.1)
+                    end
+                    if _raceTimer and (_raceTimer:IsA('IntValue') and _raceTimer.Value <= 0) then
+                        task.wait(0.5)
+                        game:GetService('ReplicatedStorage'):WaitForChild('rEvents'):WaitForChild('raceEvent'):FireServer('joinRace')
+                    end
+                end
+
+                task.wait(0.05)
+            end
+        end)
+    end
+end)
+_Racing:CreateToggle('Fill Race', 'Automatically fills the race', function(p39)
+    u9 = p39
+
+    if u9 then
+        u11 = task.spawn(function()
+            local _raceEvent = game:GetService('ReplicatedStorage').rEvents.raceEvent
+
+            while u9 do
+                task.wait(0.01)
+                _raceEvent:FireServer('joinRace')
+            end
+        end)
+    end
+end)
+
+local _Trading = _Main:CreateFolder('Trading')
+
+_Trading:CreateButton('Turn On', 'Turns your trades on', function()
+    game:GetService('ReplicatedStorage').rEvents.tradingEvent:FireServer('enableTrading')
+end)
+_Trading:CreateButton('Turn Off', 'Turns your trades off', function()
+    game:GetService('ReplicatedStorage').rEvents.tradingEvent:FireServer('disableTrading')
+end)
+
+local _Others = _Main:CreateFolder('Others')
+
+_Others:CreateToggle('Spin Wheel', 'Automatically spins the wheel', function(p43)
+    spinning = p43
+
+    if spinning then
+        task.spawn(function()
+            while spinning do
+                game:GetService('ReplicatedStorage').rEvents.openFortuneWheelRemote:InvokeServer('openFortuneWheel', game:GetService('ReplicatedStorage').fortuneWheelChances['Fortune Wheel'])
+                task.wait(0.5)
+            end
+        end)
+    end
+end)
+
+local u44 = false
+
+_Others:CreateToggle('Gifts', 'Automatically claims every gifts', function(p45)
+    u44 = p45
+
+    if u44 then
+        task.spawn(function()
+            while u44 do
+                for v46 = 1, 8 do
+                    ReplicatedStorage.rEvents.freeGiftClaimRemote:InvokeServer('claimGift', v46)
+                end
+
+                task.wait(0.5)
+            end
+        end)
+    end
+end)
+
+local u47 = false
+local u48 = nil
+
+_Others:CreateToggle('Auto Hoop', 'Automatically collect hoops', function(p49)
+    u47 = p49
+
+    if u47 then
+        u48 = task.spawn(function()
+            local _Hoops = game:GetService('Workspace').Hoops
+            local _Character3 = game.Players.LocalPlayer.Character
+
+            while u47 do
+                task.wait(0.01)
+
+                local v52, v53, v54 = pairs(_Hoops:GetChildren())
+
+                while true do
+                    local v55
+
+                    v54, v55 = v52(v53, v54)
+
+                    if v54 == nil then
+                        break
+                    end
+                    if v55:IsA('BasePart') and v55.Name == 'Hoop' then
+                        firetouchinterest(v55, _Character3.HumanoidRootPart, 0)
+                        task.wait(0.01)
+                        firetouchinterest(v55, _Character3.HumanoidRootPart, 1)
+                    end
+                end
+            end
+        end)
+    elseif u48 then
+        u47 = false
+        u48 = nil
+    end
+end)
+
+local _AutoFarm = v1:CreateTab('Auto Farm', '134744267361488')
+
+_AutoFarm:CreateLabel('Primary Auto Farming')
+_AutoFarm:CreateDropdown('Orb', 'Select An Orb', {
+    'Yellow Orb',
+    'Blue Orb',
+    'Orange Orb',
+    'Red Orb',
+    'Ethereal Orb',
+    'Gem',
+    'Infernal Gem',
+}, function(p57)
+    u12 = p57
+end)
+_AutoFarm:CreateDropdown('City', 'Select A City', {
+    'City',
+    'Snow City',
+    'Magma City',
+    'Legends Highway',
+    'Speed Jungle',
+    'Outer Space',
+    'Speed Desert',
+}, function(p58)
+    u13 = p58
+end)
+_AutoFarm:CreateDropdown('Rate', 'Collect Rate', {
+    '25',
+    '50',
+    '75',
+    '100',
+    '150',
+    '175',
+    '200',
+}, function(p59)
+    u14 = ({
+        ['25'] = 0.008,
+        ['50'] = 0.004,
+        ['75'] = 0.0026,
+        ['100'] = 0.002,
+        ['150'] = 0.0013,
+        ['175'] = 0.0011,
+        ['200'] = 0.001,
+    })[p59] * 6
+end)
+_AutoFarm:CreateToggle('Collect Orb', 'Start Collecting Orb', function(p60)
+    u16 = p60
+
+    if u16 then
+        u17 = task.spawn(function()
+            local _orbEvent = game:GetService('ReplicatedStorage').rEvents.orbEvent
+
+            while u16 do
+                task.wait(u14)
+
+                for _ = 1, u15 do
+                    _orbEvent:FireServer('collectOrb', u12, u13)
+                end
+            end
+        end)
+    end
+end)
+_AutoFarm:CreateLabel('Secondary Auto Farming')
+_AutoFarm:CreateDropdown('Orb', 'Select An Orb', {
+    'Yellow Orb',
+    'Blue Orb',
+    'Orange Orb',
+    'Red Orb',
+    'Ethereal Orb',
+    'Gem',
+    'Infernal Gem',
+}, function(p62)
+    u12 = p62
+end)
+_AutoFarm:CreateDropdown('City', 'Select A City', {
+    'City',
+    'Snow City',
+    'Magma City',
+    'Legends Highway',
+    'Speed Jungle',
+    'Outer Space',
+    'Speed Desert',
+}, function(p63)
+    u13 = p63
+end)
+_AutoFarm:CreateDropdown('Rate', 'Collect Rate', {
+    '25',
+    '50',
+    '75',
+    '100',
+    '150',
+    '175',
+    '200',
+}, function(p64)
+    u14 = ({
+        ['25'] = 0.008,
+        ['50'] = 0.004,
+        ['75'] = 0.0026,
+        ['100'] = 0.002,
+        ['150'] = 0.0013,
+        ['175'] = 0.0011,
+        ['200'] = 0.001,
+    })[p64] * 6
+end)
+_AutoFarm:CreateToggle('Collect Orb', 'Start Collecting Orb', function(p65)
+    u16 = p65
+
+    if u16 then
+        u17 = task.spawn(function()
+            local _orbEvent2 = game:GetService('ReplicatedStorage').rEvents.orbEvent
+
+            while u16 do
+                task.wait(u14)
+
+                for _ = 1, u15 do
+                    _orbEvent2:FireServer('collectOrb', u12, u13)
+                end
+            end
+        end)
+    end
+end)
+
+local _Teleport = v1:CreateTab('Teleport', '108215249100677')
+
+_Teleport:CreateLabel('World Locations')
+
+local u68 = {
+    City = CFrame.new(-9684.84, 60.65, 3093.29),
+    ['Snow City'] = CFrame.new(-9673.79, 60.65, 3788.24),
+    ['Magma City'] = CFrame.new(-11053.11, 218.58, 4904.35),
+    ['Legends Highway'] = CFrame.new(-13097.01, 218.58, 5913.35),
+    ['Speed Jungle'] = CFrame.new(-15271.3789, 399.944458, 5578.9165),
+}
+
+_Teleport:CreateDropdown('Teleport Locations', 'Choose a location to teleport', {
+    'City',
+    'Snow City',
+    'Magma City',
+    'Legends Highway',
+    'Speed Jungle',
+}, function(p69)
+    local _Character4 = game.Players.LocalPlayer.Character
+
+    if _Character4 and _Character4:FindFirstChild('HumanoidRootPart') then
+        _Character4.HumanoidRootPart.CFrame = u68[p69]
+    end
+end)
+
+local _Game = _Teleport:CreateFolder('Game')
+
+_Game:CreateButton('Server Hop', 'Changes server', function()
+    game:GetService('TeleportService'):Teleport(game.PlaceId)
+end)
+_Game:CreateButton('Rejoin Server', 'Rejoin your current server', function()
+    game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+end)
+
+local _ReplicatedStorage2 = game:GetService('ReplicatedStorage')
+local _cPetShopRemote = _ReplicatedStorage2:WaitForChild('cPetShopRemote')
+local _cPetShopFolder = _ReplicatedStorage2:WaitForChild('cPetShopFolder')
+local _petEvolveEvent = _ReplicatedStorage2.rEvents.petEvolveEvent
+local _Pet = v1:CreateTab('Pet', '124446379088014')
+
+_Pet:CreateLabel('Basic Pets')
+
+local u77 = nil
+local u78 = false
+local u79 = nil
+
+_Pet:CreateDropdown('Pet', 'Select A Pet', {
+    'Red Bunny',
+    'Red Kitty',
+    'Blue Bunny',
+    'Yellow Squeak',
+    'Silver Dog',
+}, function(p80)
+    u77 = p80
+end)
+_Pet:CreateToggle('Hatch Pet', '', function(p81)
+    u78 = p81
+
+    if p81 then
+        u79 = task.spawn(function()
+            while u78 and u77 do
+                _cPetShopRemote:InvokeServer(_cPetShopFolder[u77])
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_Pet:CreateLabel('Advanced Pets')
+
+local u82 = nil
+local u83 = false
+local u84 = nil
+
+_Pet:CreateDropdown('Pet', 'Select A Pet', {
+    'Green Vampy',
+    'Dark Golem',
+    'Pink Butterfly',
+    'Yellow Butterfly',
+    'Green Golem',
+}, function(p85)
+    u82 = p85
+end)
+_Pet:CreateToggle('Hatch Pet', '', function(p86)
+    u83 = p86
+
+    if p86 then
+        u84 = task.spawn(function()
+            while u83 and u82 do
+                _cPetShopRemote:InvokeServer(_cPetShopFolder[u82])
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_Pet:CreateLabel('Rare Pets')
+
+local u87 = nil
+local u88 = false
+local u89 = nil
+
+_Pet:CreateDropdown('Pet', 'Select A Pet', {
+    'Purple Pegasus',
+    'Golden Angel',
+    'Orange Pegasus',
+    'Orange Falcon',
+}, function(p90)
+    u87 = p90
+end)
+_Pet:CreateToggle('Hatch Pet', '', function(p91)
+    u88 = p91
+
+    if p91 then
+        u89 = task.spawn(function()
+            while u88 and u87 do
+                _cPetShopRemote:InvokeServer(_cPetShopFolder[u87])
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_Pet:CreateLabel('Epic Pets')
+
+local u92 = nil
+local u93 = false
+local u94 = nil
+
+_Pet:CreateDropdown('Pet', 'Select A Pet', {
+    'Golden Phoenix',
+    'Green Firecaster',
+    'Voltaic Falcon',
+    'Blue Phoenix',
+}, function(p95)
+    u92 = p95
+end)
+_Pet:CreateToggle('Hatch Pet', '', function(p96)
+    u93 = p96
+
+    if p96 then
+        u94 = task.spawn(function()
+            while u93 and u92 do
+                _cPetShopRemote:InvokeServer(_cPetShopFolder[u92])
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_Pet:CreateLabel('Unique Pets')
+
+local u97 = nil
+local u98 = false
+local u99 = nil
+
+_Pet:CreateDropdown('Pet', 'Select A Pet', {
+    'Falming Hedgehog',
+    'Electro Golem',
+    'Magic Butterfly',
+    'Tundra Dragon',
+    'Quantum Dragon',
+    'Maestro Dog',
+    'Speedy Sensei',
+    'Golden Viking',
+}, function(p100)
+    u97 = p100
+end)
+_Pet:CreateToggle('Hatch Pet', '', function(p101)
+    u98 = p101
+
+    if p101 then
+        u99 = task.spawn(function()
+            while u98 and u97 do
+                _cPetShopRemote:InvokeServer(_cPetShopFolder[u97])
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_Pet:CreateLabel('Omega Pets')
+
+local u102 = nil
+local u103 = false
+local u104 = nil
+
+_Pet:CreateDropdown('Pet', 'Select A Pet', {
+    'Soul Fusion Dog',
+    'Dark Soul Birdie',
+    'Hypersonic Pegasus',
+    'Eternal Nebula Dragon',
+    'Ultimate Overdrive Bunny',
+    'Shadow Edge Kitty',
+    'Swift Samurai',
+}, function(p105)
+    u102 = p105
+end)
+_Pet:CreateToggle('Hatch Pet', '', function(p106)
+    u103 = p106
+
+    if p106 then
+        u104 = task.spawn(function()
+            while u103 and u102 do
+                _cPetShopRemote:InvokeServer(_cPetShopFolder[u102])
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+
+local _PetEvolve = v1:CreateTab('Pet Evolve', '124446379088014')
+
+_PetEvolve:CreateLabel('Basic Pets')
+
+local u108 = nil
+local u109 = false
+local u110 = nil
+
+_PetEvolve:CreateDropdown('Pet', 'Select A Pet', {
+    'Red Bunny',
+    'Red Kitty',
+    'Blue Bunny',
+    'Yellow Squeak',
+    'Silver Dog',
+}, function(p111)
+    u108 = p111
+end)
+_PetEvolve:CreateToggle('Evolve Pet', '', function(p112)
+    u109 = p112
+
+    if p112 then
+        u110 = task.spawn(function()
+            while u109 and u108 do
+                _petEvolveEvent:FireServer('evolvePet', u108)
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_PetEvolve:CreateLabel('Advanced Pets')
+
+local u113 = nil
+local u114 = false
+local u115 = nil
+
+_PetEvolve:CreateDropdown('Pet', 'Select A Pet', {
+    'Green Vampy',
+    'Dark Golem',
+    'Pink Butterfly',
+    'Yellow Butterfly',
+    'Green Golem',
+}, function(p116)
+    u113 = p116
+end)
+_PetEvolve:CreateToggle('Evolve Pet', '', function(p117)
+    u114 = p117
+
+    if p117 then
+        u115 = task.spawn(function()
+            while u114 and u113 do
+                _petEvolveEvent:FireServer('evolvePet', u113)
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_PetEvolve:CreateLabel('Rare Pets')
+
+local u118 = nil
+local u119 = false
+local u120 = nil
+
+_PetEvolve:CreateDropdown('Pet', 'Select A Pet', {
+    'Purple Pegasus',
+    'Golden Angel',
+    'Orange Pegasus',
+    'Orange Falcon',
+}, function(p121)
+    u118 = p121
+end)
+_PetEvolve:CreateToggle('Evolve Pet', '', function(p122)
+    u119 = p122
+
+    if p122 then
+        u120 = task.spawn(function()
+            while u119 and u118 do
+                _petEvolveEvent:FireServer('evolvePet', u118)
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_PetEvolve:CreateLabel('Epic Pets')
+
+local u123 = nil
+local u124 = false
+local u125 = nil
+
+_PetEvolve:CreateDropdown('Pet', 'Select A Pet', {
+    'Golden Phoenix',
+    'Green Firecaster',
+    'Voltaic Falcon',
+    'Blue Phoenix',
+}, function(p126)
+    u123 = p126
+end)
+_PetEvolve:CreateToggle('Evolve Pet', '', function(p127)
+    u124 = p127
+
+    if p127 then
+        u125 = task.spawn(function()
+            while u124 and u123 do
+                _petEvolveEvent:FireServer('evolvePet', u123)
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_PetEvolve:CreateLabel('Unique Pets')
+
+local u128 = nil
+local u129 = false
+local u130 = nil
+
+_PetEvolve:CreateDropdown('Pet', 'Select A Pet', {
+    'Falming Hedgehog',
+    'Electro Golem',
+    'Magic Butterfly',
+    'Tundra Dragon',
+    'Quantum Dragon',
+    'Maestro Dog',
+    'Speedy Sensei',
+    'Golden Viking',
+}, function(p131)
+    u128 = p131
+end)
+_PetEvolve:CreateToggle('Evolve Pet', '', function(p132)
+    u129 = p132
+
+    if p132 then
+        u130 = task.spawn(function()
+            while u129 and u128 do
+                _petEvolveEvent:FireServer('evolvePet', u128)
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_PetEvolve:CreateLabel('Omega Pets')
+
+local u133 = nil
+local u134 = false
+local u135 = nil
+
+_PetEvolve:CreateDropdown('Pet', 'Select A Pet', {
+    'Soul Fusion Dog',
+    'Dark Soul Birdie',
+    'Hypersonic Pegasus',
+    'Eternal Nebula Dragon',
+    'Ultimate Overdrive Bunny',
+    'Shadow Edge Kitty',
+    'Swift Samurai',
+}, function(p136)
+    u133 = p136
+end)
+_PetEvolve:CreateToggle('Evolve Pet', '', function(p137)
+    u134 = p137
+
+    if p137 then
+        u135 = task.spawn(function()
+            while u134 and u133 do
+                _petEvolveEvent:FireServer('evolvePet', u133)
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+
+local _Trail = v1:CreateTab('Trail', '96040996786935')
+
+_Trail:CreateLabel('1-5')
+
+local u139 = nil
+local u140 = false
+local u141 = nil
+
+_Trail:CreateDropdown('Trail', 'Select A Trail', {
+    '1st Trail',
+    '2nd Trail',
+    'Third Trail',
+    'Fourth Trail',
+    'Fifth Trail',
+}, function(p142)
+    u139 = p142
+end)
+_Trail:CreateToggle('Hatch Trail', '', function(p143)
+    u140 = p143
+
+    if p143 then
+        u141 = task.spawn(function()
+            while u140 and u139 do
+                _cPetShopRemote:InvokeServer(_cPetShopFolder[u139])
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_Trail:CreateLabel('B Trails')
+
+local u144 = nil
+local u145 = false
+local u146 = nil
+
+_Trail:CreateDropdown('Trail', 'Select A Trail', {
+    'BG Speed',
+    'Blue & Green',
+    'Blue Coin',
+    'Blue Gem',
+    'Blue Lightning',
+    'Blue Snow',
+    'Blue Soul',
+    'Blue Sparks',
+    'Blue Storm',
+    'Blue Trail',
+}, function(p147)
+    u144 = p147
+end)
+_Trail:CreateToggle('Hatch Trail', '', function(p148)
+    u145 = p148
+
+    if p148 then
+        u146 = task.spawn(function()
+            while u145 and u144 do
+                _cPetShopRemote:InvokeServer(_cPetShopFolder[u144])
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_Trail:CreateLabel('D Trails')
+
+local u149 = nil
+local u150 = false
+local u151 = nil
+
+_Trail:CreateDropdown('Trail', 'Select A Trail', {
+    'Dragonfire',
+}, function(p152)
+    u149 = p152
+end)
+_Trail:CreateToggle('Hatch Trail', '', function(p153)
+    u150 = p153
+
+    if p153 then
+        u151 = task.spawn(function()
+            while u150 and u149 do
+                _cPetShopRemote:InvokeServer(_cPetShopFolder[u149])
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_Trail:CreateLabel('G Trails')
+
+local u154 = nil
+local u155 = false
+local u156 = nil
+
+_Trail:CreateDropdown('Trail', 'Select A Trail', {
+    'Golden Lightning',
+    'Green & Orange',
+    'Green Coin',
+    'Green Gem',
+    'Green Lightning',
+    'Green Snow',
+    'Green Soul',
+    'Green Sparks',
+    'Green Storm',
+    'Green Trail',
+}, function(p157)
+    u154 = p157
+end)
+_Trail:CreateToggle('Hatch Trail', '', function(p158)
+    u155 = p158
+
+    if p158 then
+        u156 = task.spawn(function()
+            while u155 and u154 do
+                _cPetShopRemote:InvokeServer(_cPetShopFolder[u154])
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_Trail:CreateLabel('H Trails')
+
+local u159 = nil
+local u160 = false
+local u161 = nil
+
+_Trail:CreateDropdown('Trail', 'Select A Trail', {
+    'Hyperblast',
+}, function(p162)
+    u159 = p162
+end)
+_Trail:CreateToggle('Hatch Trail', '', function(p163)
+    u160 = p163
+
+    if p163 then
+        u161 = task.spawn(function()
+            while u160 and u159 do
+                _cPetShopRemote:InvokeServer(_cPetShopFolder[u159])
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_Trail:CreateLabel('O Trails')
+
+local u164 = nil
+local u165 = false
+local u166 = nil
+
+_Trail:CreateDropdown('Trail', 'Select A Trail', {
+    'OG Speed',
+    'Orange Coin',
+    'Orange Gem',
+    'Orange Lightning',
+    'Orange Snow',
+    'Orange Soul',
+    'Orange Sparks',
+    'Orange Storm',
+    'Orange Trail',
+}, function(p167)
+    u164 = p167
+end)
+_Trail:CreateToggle('Hatch Trail', '', function(p168)
+    u165 = p168
+
+    if p168 then
+        u166 = task.spawn(function()
+            while u165 and u164 do
+                _cPetShopRemote:InvokeServer(_cPetShopFolder[u164])
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_Trail:CreateLabel('P Trails')
+
+local u169 = nil
+local u170 = false
+local u171 = nil
+
+_Trail:CreateDropdown('Trail', 'Select A Trail', {
+    'PP Speed',
+    'Pink Gem',
+    'Pink Lightning',
+    'Pink Snow',
+    'Pink Soul',
+    'Pink Sparks',
+    'Pink Storm',
+    'Pink Trail',
+    'Purple & Pink',
+    'Purple Coin',
+    'Purple Gem',
+    'Purple Lightning',
+    'Purple Soul',
+    'Purple Sparks',
+    'Purple Storm',
+    'Purple Trail',
+}, function(p172)
+    u169 = p172
+end)
+_Trail:CreateToggle('Hatch Trail', '', function(p173)
+    u170 = p173
+
+    if p173 then
+        u171 = task.spawn(function()
+            while u170 and u169 do
+                _cPetShopRemote:InvokeServer(_cPetShopFolder[u169])
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_Trail:CreateLabel('R Trails')
+
+local u174 = nil
+local u175 = false
+local u176 = nil
+
+_Trail:CreateDropdown('Trail', 'Select A Trail', {
+    'RB Speed',
+    'Rainbow Lightning',
+    'Rainbow Soul',
+    'Rainbow Sparks',
+    'Rainbow Speed',
+    'Rainbow Steps',
+    'Rainbow Storm',
+    'Rainbow Trail',
+    'Red & Blue',
+    'Red Coin',
+    'Red Gem',
+    'Red Lightning',
+    'Red Snow',
+    'Red Soul',
+    'Red Sparks',
+    'Red Storm',
+    'Red Trail',
+}, function(p177)
+    u174 = p177
+end)
+_Trail:CreateToggle('Hatch Trail', '', function(p178)
+    u175 = p178
+
+    if p178 then
+        u176 = task.spawn(function()
+            while u175 and u174 do
+                _cPetShopRemote:InvokeServer(_cPetShopFolder[u174])
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_Trail:CreateLabel('W Trails')
+
+local u179 = nil
+local u180 = false
+local u181 = nil
+
+_Trail:CreateDropdown('Trail', 'Select A Trail', {
+    'White Snow',
+}, function(p182)
+    u179 = p182
+end)
+_Trail:CreateToggle('Hatch Trail', '', function(p183)
+    u180 = p183
+
+    if p183 then
+        u181 = task.spawn(function()
+            while u180 and u179 do
+                _cPetShopRemote:InvokeServer(_cPetShopFolder[u179])
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+_Trail:CreateLabel('Y Trails')
+
+local u184 = nil
+local u185 = false
+local u186 = nil
+
+_Trail:CreateDropdown('Trail', 'Select A Trail', {
+    'YB Speed',
+    'Yellow & Blue',
+    'Yellow Soul',
+    'Yellow Sparks',
+    'Yellow Trail',
+}, function(p187)
+    u184 = p187
+end)
+_Trail:CreateToggle('Hatch Trail', '', function(p188)
+    u185 = p188
+
+    if p188 then
+        u186 = task.spawn(function()
+            while u185 and u184 do
+                _cPetShopRemote:InvokeServer(_cPetShopFolder[u184])
+                task.wait(0.1)
+            end
+        end)
+    end
+end)
+
+local _Crystal = v1:CreateTab('Crystal', '81801152662751')
+local u190 = 'Yellow Crystal'
+local u191 = false
+
+_Crystal:CreateDropdown('Crystal', 'Choose which crystal to hatch', {
+    'Yellow Crystal',
+    'Blue Crystal',
+    'Red Crystal',
+    'Lightning Crystal',
+    'Inferno Crystal',
+    'Lava Crystal',
+    'Snow Crystal',
+    'Electro Legends Crystal',
+    'Space Crystal',
+    'Alien Crystal',
+    'Electro Crystal',
+    'Desert Crystal',
+    'Jungle Crystal',
+}, function(p192)
+    u190 = p192
+end)
+_Crystal:CreateToggle('Auto Hatch Crystal', 'Automatically hatch the selected crystal', function(p193)
+    u191 = p193
+
+    if u191 then
+        task.spawn(function()
+            while u191 do
+                game:GetService('ReplicatedStorage').rEvents.openCrystalRemote:InvokeServer('openCrystal', u190)
+                task.wait(0.01)
+            end
+        end)
+    end
+end)
+
+local _Rebirth = v1:CreateTab('Rebirth', '80196394970396')
+local u195 = 0
+local u196 = false
+local u197 = nil
+local u198 = false
+local u199 = nil
+
+_Rebirth:CreateTextbox('Target Rebirth', 'Set your rebirth target', function(p200)
+    u195 = tonumber(p200) or 0
+end)
+_Rebirth:CreateToggle('Rebirth Infinitely', 'Rebirth without limit', function(p201)
+    u196 = p201
+
+    if u196 then
+        u197 = task.spawn(function()
+            local _rebirthEvent = game:GetService('ReplicatedStorage').rEvents.rebirthEvent
+
+            while u196 do
+                task.wait(0.001)
+                _rebirthEvent:FireServer('rebirthRequest')
+            end
+        end)
+    end
+end)
+_Rebirth:CreateToggle('Rebirth Until Target', 'Rebirth until you reach target', function(p203)
+    u198 = p203
+
+    if u199 then
+        task.cancel(u199)
+    end
+    if u198 then
+        u199 = task.spawn(function()
+            local _Rebirths = game.Players.LocalPlayer:WaitForChild('leaderstats'):WaitForChild('Rebirths')
+            local _rebirthEvent2 = game:GetService('ReplicatedStorage').rEvents.rebirthEvent
+
+            while u198 and _Rebirths.Value < u195 do
+                task.wait(0.01)
+                _rebirthEvent2:FireServer('rebirthRequest')
+            end
+
+            u198 = false
+        end)
+    end
+end)
+
+local _Stats = v1:CreateTab('Stats', '130896275975449')
+local _CurrentStats = _Stats:CreateFolder('Current Stats')
+local _Steps0 = _CurrentStats:CreateLabel('Steps: 0')
+local _Rebirths0 = _CurrentStats:CreateLabel('Rebirths: 0')
+local _Hoops0 = _CurrentStats:CreateLabel('Hoops: 0')
+local _Races0 = _CurrentStats:CreateLabel('Races: 0')
+local _GainedStats = _Stats:CreateFolder('Gained Stats')
+local _Steps02 = _GainedStats:CreateLabel('Steps: 0')
+local _Rebirths02 = _GainedStats:CreateLabel('Rebirths: 0')
+local _Hoops02 = _GainedStats:CreateLabel('Hoops: 0')
+local _Races02 = _GainedStats:CreateLabel('Races: 0')
+local _leaderstats = game.Players.LocalPlayer:WaitForChild('leaderstats')
+local u218 = {}
+local v219 = _leaderstats
+
+u218.Steps = _leaderstats.WaitForChild(v219, 'Steps').Value
+
+local v220 = _leaderstats
+
+u218.Rebirths = _leaderstats.WaitForChild(v220, 'Rebirths').Value
+
+local v221 = _leaderstats
+
+u218.Hoops = _leaderstats.WaitForChild(v221, 'Hoops').Value
+
+local v222 = _leaderstats
+
+u218.Races = _leaderstats.WaitForChild(v222, 'Races').Value
+
+local function u225(p223)
+    local v224 = math.abs(p223)
+
+    if v224 >= 1e18 then
+        return string.format('%.2fqi', p223 / 1e18)
+    elseif v224 >= 1000000000000000 then
+        return string.format('%.2fqa', p223 / 1000000000000000)
+    elseif v224 >= 1000000000000 then
+        return string.format('%.2ft', p223 / 1000000000000)
+    elseif v224 >= 1000000000 then
+        return string.format('%.2fb', p223 / 1000000000)
+    elseif v224 >= 1000000 then
+        return string.format('%.2fm', p223 / 1000000)
+    elseif v224 >= 1000 then
+        return string.format('%.2fk', p223 / 1000)
+    else
+        return tostring(p223)
+    end
+end
+local function v227()
+    local v226 = {
+        Steps = _leaderstats.Steps.Value,
+        Rebirths = _leaderstats.Rebirths.Value,
+        Hoops = _leaderstats.Hoops.Value,
+        Races = _leaderstats.Races.Value,
+    }
+
+    _Steps0:SetContent('Steps: ' .. u225(v226.Steps))
+    _Rebirths0:SetContent('Rebirths: ' .. u225(v226.Rebirths))
+    _Hoops0:SetContent('Hoops: ' .. u225(v226.Hoops))
+    _Races0:SetContent('Races: ' .. u225(v226.Races))
+    _Steps02:SetContent('Steps: ' .. u225(v226.Steps - u218.Steps))
+    _Rebirths02:SetContent('Rebirths: ' .. u225(v226.Rebirths - u218.Rebirths))
+    _Hoops02:SetContent('Hoops: ' .. u225(v226.Hoops - u218.Hoops))
+    _Races02:SetContent('Races: ' .. u225(v226.Races - u218.Races))
+end
+
+local v228, v229, v230 = pairs({
+    'Steps',
+    'Rebirths',
+    'Hoops',
+    'Races',
+})
+local v231 = _leaderstats
+
+while true do
+    local v232
+
+    v230, v232 = v228(v229, v230)
+
+    if v230 == nil then
+        break
+    end
+
+    v231:WaitForChild(v232):GetPropertyChangedSignal('Value'):Connect(v227)
+end
+
+v227()
+
+local _Ultimates = v1:CreateTab('Ultimates', '130063610711888')
+local _UltimatesButton = _Ultimates:CreateFolder('Ultimates Button')
+
+_UltimatesButton:CreateLabel('Rebirth Pets')
+_UltimatesButton:CreateButton('Magzor', 'Buys Magzor Ultimate', function()
+    game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'Magzor')
+end)
+_UltimatesButton:CreateButton('Crowd Surfer', 'Buys Crowd Surfer Ultimate', function()
+    game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'Crowd Surfer')
+end)
+_UltimatesButton:CreateButton('Sorenzo', 'Buys Sorenzo Ultimate', function()
+    game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'Sorenzo')
+end)
+_UltimatesButton:CreateLabel('Game Upgrades')
+_UltimatesButton:CreateButton('+10 Item Capacity', 'Buys +10 Item Capacity Ultimate', function()
+    game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', '+10 Item Capacity')
+end)
+_UltimatesButton:CreateButton('X2 Trail Boosts', 'Buys X2 Trail Boosts Ultimate', function()
+    game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'X2 Trail Boosts')
+end)
+_UltimatesButton:CreateButton('+1 Pet Slot', 'Buys +1 Pet Slot Ultimate', function()
+    game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', '+1 Pet Slot')
+end)
+_UltimatesButton:CreateButton('+1 Daily Spin', 'Buys +1 Daily Spin Ultimate', function()
+    game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', '+1 Daily Spin')
+end)
+_UltimatesButton:CreateButton('X2 Chests Rewards', 'Buys X2 Chests Rewards Ultimate', function()
+    game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'X2 Chests Rewards')
+end)
+_UltimatesButton:CreateButton('X2 Quest Rewards', 'Buys X2 Quest Rewards Ultimate', function()
+    game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'X2 Quest Rewards')
+end)
+_UltimatesButton:CreateLabel('Enhancements')
+_UltimatesButton:CreateButton('Gem Booster', 'Buys Gem Booster Ultimate', function()
+    game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'Gem Booster')
+end)
+_UltimatesButton:CreateButton('Step Booster', 'Buys Step Booster Ultimate', function()
+    game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'Step Booster')
+end)
+_UltimatesButton:CreateButton('Infernal Gems', 'Buys Infernal Gems Ultimate', function()
+    game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'Infernal Gems')
+end)
+_UltimatesButton:CreateButton('Ethereal Orbs', 'Buys Ethereal Orbs Ultimate', function()
+    game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'Ethereal Orbs')
+end)
+_UltimatesButton:CreateButton('Demon Hoops', 'Buys Demon Hoops Ultimate', function()
+    game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'Demon Hoops')
+end)
+_UltimatesButton:CreateButton('Divine Rebirth', 'Buys Divine Rebirth Ultimate', function()
+    game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'Divine Rebirth')
+end)
+
+local _UltimatesToggle = _Ultimates:CreateFolder('Ultimates Toggle')
+
+_UltimatesToggle:CreateLabel('Rebirth Pets')
+_UltimatesToggle:CreateToggle('Magzor', 'Buys Magzor Ultimate', function(p236)
+    local u237 = p236
+
+    task.spawn(function()
+        while u237 do
+            task.wait(0.1)
+            game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'Magzor')
+        end
+    end)
+end)
+_UltimatesToggle:CreateToggle('Crowd Surfer', 'Buys Crowd Surfer Ultimate', function(p238)
+    local u239 = p238
+
+    task.spawn(function()
+        while u239 do
+            task.wait(0.1)
+            game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'Crowd Surfer')
+        end
+    end)
+end)
+_UltimatesToggle:CreateToggle('Sorenzo', 'Buys Sorenzo Ultimate', function(p240)
+    local u241 = p240
+
+    task.spawn(function()
+        while u241 do
+            task.wait(0.1)
+            game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'Sorenzo')
+        end
+    end)
+end)
+_UltimatesToggle:CreateLabel('Game Upgrades')
+_UltimatesToggle:CreateToggle('+10 Item Capacity', 'Buys +10 Item Capacity Ultimate', function(p242)
+    local u243 = p242
+
+    task.spawn(function()
+        while u243 do
+            task.wait(0.1)
+            game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', '+10 Item Capacity')
+        end
+    end)
+end)
+_UltimatesToggle:CreateToggle('X2 Trail Boosts', 'Buys X2 Trail Boosts Ultimate', function(p244)
+    local u245 = p244
+
+    task.spawn(function()
+        while u245 do
+            task.wait(0.1)
+            game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'X2 Trail Boosts')
+        end
+    end)
+end)
+_UltimatesToggle:CreateToggle('+1 Pet Slot', 'Buys +1 Pet Slot Ultimate', function(p246)
+    local u247 = p246
+
+    task.spawn(function()
+        while u247 do
+            task.wait(0.1)
+            game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', '+1 Pet Slot')
+        end
+    end)
+end)
+_UltimatesToggle:CreateToggle('+1 Daily Spin', 'Buys +1 Daily Spin Ultimate', function(p248)
+    local u249 = p248
+
+    task.spawn(function()
+        while u249 do
+            task.wait(0.1)
+            game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', '+1 Daily Spin')
+        end
+    end)
+end)
+_UltimatesToggle:CreateToggle('X2 Chests Rewards', 'Buys X2 Chests Rewards Ultimate', function(p250)
+    local u251 = p250
+
+    task.spawn(function()
+        while u251 do
+            task.wait(0.1)
+            game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'X2 Chests Rewards')
+        end
+    end)
+end)
+_UltimatesToggle:CreateToggle('X2 Quest Rewards', 'Buys X2 Quest Rewards Ultimate', function(p252)
+    local u253 = p252
+
+    task.spawn(function()
+        while u253 do
+            task.wait(0.1)
+            game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'X2 Quest Rewards')
+        end
+    end)
+end)
+_UltimatesToggle:CreateLabel('Enhancements')
+_UltimatesToggle:CreateToggle('Gem Booster', 'Buys Gem Booster Ultimate', function(p254)
+    local u255 = p254
+
+    task.spawn(function()
+        while u255 do
+            task.wait(0.1)
+            game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'Gem Booster')
+        end
+    end)
+end)
+_UltimatesToggle:CreateToggle('Step Booster', 'Buys Step Booster Ultimate', function(p256)
+    local u257 = p256
+
+    task.spawn(function()
+        while u257 do
+            task.wait(0.1)
+            game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'Step Booster')
+        end
+    end)
+end)
+_UltimatesToggle:CreateToggle('Infernal Gems', 'Buys Infernal Gems Ultimate', function(p258)
+    local u259 = p258
+
+    task.spawn(function()
+        while u259 do
+            task.wait(0.1)
+            game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'Infernal Gems')
+        end
+    end)
+end)
+_UltimatesToggle:CreateToggle('Ethereal Orbs', 'Buys Ethereal Orbs Ultimate', function(p260)
+    local u261 = p260
+
+    task.spawn(function()
+        while u261 do
+            task.wait(0.1)
+            game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'Ethereal Orbs')
+        end
+    end)
+end)
+_UltimatesToggle:CreateToggle('Demon Hoops', 'Buys Demon Hoops Ultimate', function(p262)
+    local u263 = p262
+
+    task.spawn(function()
+        while u263 do
+            task.wait(0.1)
+            game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'Demon Hoops')
+        end
+    end)
+end)
+_UltimatesToggle:CreateToggle('Divine Rebirth', 'Buys Divine Rebirth Ultimate', function(p264)
+    local u265 = p264
+
+    task.spawn(function()
+        while u265 do
+            task.wait(0.1)
+            game:GetService('ReplicatedStorage').rEvents.ultimatesRemote:InvokeServer('upgradeUltimate', 'Divine Rebirth')
+        end
+    end)
+end)
+
+local _Sounds = v1:CreateTab('Sounds', '120513723532951')
+local u267 = {}
+
+_Sounds:CreateToggle('Disable Hoop Sound', '', function(p268)
+    local v269, v270, v271 = pairs(game:GetDescendants())
+
+    while true do
+        local v272
+
+        v271, v272 = v269(v270, v271)
+
+        if v271 == nil then
+            break
+        end
+        if v272:IsA('Sound') and v272.Name == 'hoopSound' then
+            if p268 then
+                u267[v272] = v272.Volume
+                v272.Volume = 0
+            else
+                v272.Volume = u267[v272] or 2.1
+                u267[v272] = nil
+            end
+        end
+    end
+end)
+_Sounds:CreateToggle('Disable SpeedRamp Sound', '', function(p273)
+    local v274, v275, v276 = pairs(game:GetDescendants())
+
+    while true do
+        local v277
+
+        v276, v277 = v274(v275, v276)
+
+        if v276 == nil then
+            break
+        end
+        if v277:IsA('Sound') and v277.Name == 'boostSound' then
+            if p273 then
+                u267[v277] = v277.Volume
+                v277.Volume = 0
+            else
+                v277.Volume = u267[v277] or 1.1
+                u267[v277] = nil
+            end
+        end
+    end
+end)
+_Sounds:CreateToggle('Disable Level Up Sound', '', function(p278)
+    local v279, v280, v281 = pairs(game:GetDescendants())
+
+    while true do
+        local v282
+
+        v281, v282 = v279(v280, v281)
+
+        if v281 == nil then
+            break
+        end
+        if v282:IsA('Sound') and v282.Name == 'levelUpSound' then
+            if p278 then
+                u267[v282] = v282.Volume
+                v282.Volume = 0
+            else
+                v282.Volume = u267[v282] or 1
+                u267[v282] = nil
+            end
+        end
+    end
+end)
+_Sounds:CreateToggle('Disable Race Beep Sound', '', function(p283)
+    local v284, v285, v286 = pairs(game:GetDescendants())
+
+    while true do
+        local v287
+
+        v286, v287 = v284(v285, v286)
+
+        if v286 == nil then
+            break
+        end
+        if v287:IsA('Sound') and v287.Name == 'raceBeepSound' then
+            if p283 then
+                u267[v287] = v287.Volume
+                v287.Volume = 0
+            else
+                v287.Volume = u267[v287] or 1
+                u267[v287] = nil
+            end
+        end
+    end
+end)
+_Sounds:CreateToggle('Disable Rebirth Sound', '', function(p288)
+    local v289, v290, v291 = pairs(game:GetDescendants())
+
+    while true do
+        local v292
+
+        v291, v292 = v289(v290, v291)
+
+        if v291 == nil then
+            break
+        end
+        if v292:IsA('Sound') and v292.Name == 'rebirthSound' then
+            if p288 then
+                u267[v292] = v292.Volume
+                v292.Volume = 0
+            else
+                v292.Volume = u267[v292] or 1
+                u267[v292] = nil
+            end
+        end
+    end
+end)
